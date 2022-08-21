@@ -1,11 +1,12 @@
 package jlog
 
-import "os"
-
+import (
+	"os"
+)
 
 // Check that the path exist
 // if path does not exist, return false
-func checkDirs(path string) bool{
+func checkDirs(path string) bool {
 	_, err := os.Stat(path)
 	if os.IsNotExist(err) {
 		return false
@@ -14,9 +15,13 @@ func checkDirs(path string) bool{
 }
 
 // Creates missing folders
-func createDirs(path string) {
+func createDir(path string, many bool) {
 	if !checkDirs(path) {
-		_ = os.MkdirAll(path, 0777)
+		if many {
+			_ = os.MkdirAll(path, 0777)
+		} else {
+			_ = os.Mkdir(path, 0777)
+		}
 	}
 }
 
