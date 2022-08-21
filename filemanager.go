@@ -2,17 +2,35 @@ package jlog
 
 import "os"
 
+
+// Check that the path exist
+// if path does not exist, return false
+func checkDirs(path string) bool{
+	_, err := os.Stat(path)
+	if os.IsNotExist(err) {
+		return false
+	}
+	return true
+}
+
+// Creates missing folders
+func createDirs(path string) {
+	if !checkDirs(path) {
+		_ = os.MkdirAll(path, 0777)
+	}
+}
+
 // writeFile writes data to a file named by filename.
 // If the file does not exist, the file will be created.
 // If the file exist, data will be appended to file
 func writeFile(filename string, data []byte, perm os.FileMode) error {
-	file, err := os.OpenFile(filename, os.O_WRONLY|os.O_CREATE|os.O_APPEND, perm)
+	f, err := os.OpenFile(filename, os.O_WRONLY|os.O_CREATE|os.O_APPEND, perm)
 	if err != nil {
 		return err
 	}
-	_, err = file.Write(data)
-	if err1 := file.Close(); err == nil {
-		err = err1
+	_, err = f.Write(data)
+	if errW := f.Close(); err == nil {
+		err = errW
 	}
 	return err
 }
