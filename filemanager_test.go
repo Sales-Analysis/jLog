@@ -9,7 +9,6 @@ func TestCheckDirsPositive(t *testing.T) {
 	}
 }
 
-/*
 func TestCheckDirsNegative(t *testing.T) {
 	path := "./isNotExitPath"
 	if checkDirs(path) {
@@ -17,6 +16,7 @@ func TestCheckDirsNegative(t *testing.T) {
 	}
 }
 
+/*
 func TestCreateDir(t *testing.T) {
 	path := "./data/test/test_folder"
 	createDir(path, false)

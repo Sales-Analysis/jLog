@@ -1,6 +1,7 @@
 package jlog
 
 import (
+	"fmt"
 	"os"
 )
 
@@ -8,10 +9,8 @@ import (
 // if path does not exist, return false
 func checkDirs(path string) bool {
 	_, err := os.Stat(path)
-	if os.IsNotExist(err) {
-		return false
-	}
-	return true
+	fmt.Println(os.IsNotExist(err))
+	return !os.IsNotExist(err)
 }
 
 // Creates missing folders
