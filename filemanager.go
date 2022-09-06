@@ -3,6 +3,7 @@ package jlog
 import (
 	"fmt"
 	"os"
+	"strings"
 )
 
 // Check that the path exist
@@ -27,7 +28,7 @@ func createDir(path string, many bool) {
 // writeFile writes data to a file named by filename.
 // If the file does not exist, the file will be created.
 // If the file exist, data will be appended to file
-func writeFile(filename string, data []byte, perm os.FileMode) error {
+func writeToFile(filename string, data []byte, perm os.FileMode) error {
 	f, err := os.OpenFile(filename, os.O_WRONLY|os.O_CREATE|os.O_APPEND, perm)
 	if err != nil {
 		return err
@@ -37,4 +38,15 @@ func writeFile(filename string, data []byte, perm os.FileMode) error {
 		err = errW
 	}
 	return err
+}
+
+func byteRow(row string) []byte {
+	if !strings.Contains(row, "\n") {
+		row += "\n"
+	}
+	return []byte(row)
+}
+
+func Write(message string) {
+	byteRow(message)
 }
