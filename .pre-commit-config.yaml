@@ -23,6 +23,7 @@ repos:
             entry: .pre-commit-hooks/run-go-tests.sh
             language: 'script'
             files: '\.go$'
+            always_run: true
             description: "Runs `go test`"
         -   id: go-build
             name: 'go-build'
