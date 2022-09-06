@@ -1,6 +1,7 @@
 package jlog
 
-/*
+import "testing"
+
 func TestCheckDirsPositive(t *testing.T) {
 	path := "./data"
 	if !checkDirs(path) {
@@ -8,6 +9,7 @@ func TestCheckDirsPositive(t *testing.T) {
 	}
 }
 
+/*
 func TestCheckDirsNegative(t *testing.T) {
 	path := "./isNotExitPath"
 	if checkDirs(path) {
