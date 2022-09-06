@@ -1,10 +1,9 @@
-#!/usr/bin/env bash
-FILES=$(go list ./...  | grep -v /vendor/)
+#!/bin/bash
 
-go test -tags=unit -timeout 30s -short -v ${FILES}
+go test $(go list ./... | grep -v /vendor/)
 
-returncode=$?
-if [ $returncode -ne 0 ]; then
-  echo "unit tests failed"
+
+if [ $? -eq 1 ]; then
+  echo "tests failed"
   exit 1
 fi

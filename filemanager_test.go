@@ -1,10 +1,6 @@
 package jlog
 
-import (
-	"os"
-	"testing"
-)
-
+/*
 func TestCheckDirsPositive(t *testing.T) {
 	path := "./data"
 	if !checkDirs(path) {
@@ -35,6 +31,7 @@ func TestCreateDirMany(t *testing.T) {
 	}
 }
 
+
 func TestWriteFile(t *testing.T) {
 	r := []byte("Some comment!")
 	err := writeFile("./data/test/test_log.log", r, 0644)
@@ -46,3 +43,4 @@ func TestWriteFile(t *testing.T) {
 		t.Errorf(errf.Error())
 	}
 }
+*/
