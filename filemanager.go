@@ -40,6 +40,8 @@ func writeToFile(filename string, data []byte, perm os.FileMode) error {
 	return err
 }
 
+// byteRow converts from string to bytes.
+// if row is not contains "\n", adds to the end of the line.
 func byteRow(row string) []byte {
 	if !strings.Contains(row, "\n") {
 		row += "\n"
