@@ -24,7 +24,6 @@ func TestCreateDir(t *testing.T) {
 	}
 }
 
-/*
 func TestCreateDirMany(t *testing.T) {
 	path := "./data/test/test_folder_many/test_folder_many_nested"
 	createDir(path, true)
@@ -33,7 +32,7 @@ func TestCreateDirMany(t *testing.T) {
 	}
 }
 
-
+/*
 func TestWriteFile(t *testing.T) {
 	r := []byte("Some comment!")
 	err := writeFile("./data/test/test_log.log", r, 0644)
