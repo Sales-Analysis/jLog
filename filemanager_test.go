@@ -16,7 +16,6 @@ func TestCheckDirsNegative(t *testing.T) {
 	}
 }
 
-/*
 func TestCreateDir(t *testing.T) {
 	path := "./data/test/test_folder"
 	createDir(path, false)
@@ -25,6 +24,7 @@ func TestCreateDir(t *testing.T) {
 	}
 }
 
+/*
 func TestCreateDirMany(t *testing.T) {
 	path := "./data/test/test_folder_many/test_folder_many_nested"
 	createDir(path, true)
