@@ -20,4 +20,4 @@ package-lock.json
 package.json
 
 # test folder
-data/
+data/test/
