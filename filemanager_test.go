@@ -1,7 +1,7 @@
 package jlog
 
 import (
-	"os"
+	"reflect"
 	"testing"
 )
 
@@ -35,14 +35,9 @@ func TestCreateDirMany(t *testing.T) {
 	}
 }
 
-func TestWriteFile(t *testing.T) {
-	r := []byte("Some comment!")
-	err := writeFile("./data/test/test_log.log", r, 0644)
-	if err != nil {
-		t.Errorf(err.Error())
-	}
-	_, errf := os.Stat("./data/test/test_log.log")
-	if errf != nil {
-		t.Errorf(errf.Error())
+func TestByteRow(t *testing.T) {
+	row := byteRow("test message")
+	if reflect.TypeOf(row).Elem().Kind() != reflect.Uint8 {
+		t.Errorf("The row type is not unit8")
 	}
 }
