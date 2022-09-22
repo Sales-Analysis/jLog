@@ -4,22 +4,12 @@ import (
 	"os"
 )
 
-// Check that the path exist
-// if path does not exist, return false
-func checkDirs(path string) bool {
-	_, err := os.Stat(path)
-	return !os.IsNotExist(err)
-}
-
-// Creates missing folders
-func createDir(path string, many bool) {
-	if !checkDirs(path) {
-		if many {
-			_ = os.MkdirAll(path, 0777)
-		} else {
-			_ = os.Mkdir(path, 0777)
-		}
+// Write writes data to a file named by filename.
+func Write(message string, filename string) {
+	if !charEndOfLine(message, "\n") {
+		message += "\n"
 	}
+	writeToFile(filename, []byte(message), 0644)
 }
 
 // writeFile writes data to a file named by filename.
@@ -37,9 +27,20 @@ func writeToFile(filename string, data []byte, perm os.FileMode) error {
 	return err
 }
 
-func Write(message string) {
-	if !charEndOfLine(message, "\n") {
-		message += "\n"
+// Check that the path exist
+// if path does not exist, return false
+func checkDirs(path string) bool {
+	_, err := os.Stat(path)
+	return !os.IsNotExist(err)
+}
+
+// Creates missing folders
+func createDir(path string, many bool) {
+	if !checkDirs(path) {
+		if many {
+			_ = os.MkdirAll(path, 0777)
+		} else {
+			_ = os.Mkdir(path, 0777)
+		}
 	}
-	// []byte(message)
 }
