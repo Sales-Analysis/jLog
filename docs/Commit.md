@@ -18,9 +18,9 @@ The Conventional Commits specification is a lightweight convention on top of com
 
 ### Pre-commit
 
-Install pre-commit
+Install [pre-commit](https://pre-commit.com/#install)
 
-https://pre-commit.com/#install
+
 
 If your usage `zsh`. Try adding this command to your .zshrc.
 ```[[ -e ~/.profile ]] && emulate sh -c 'source ~/.profile'```
