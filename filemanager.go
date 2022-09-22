@@ -38,5 +38,8 @@ func writeToFile(filename string, data []byte, perm os.FileMode) error {
 }
 
 func Write(message string) {
-	byteRow(message)
+	if !charEndOfLine(message, "\n") {
+		message += "\n"
+	}
+	// []byte(message)
 }
