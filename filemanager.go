@@ -2,17 +2,7 @@ package jlog
 
 import (
 	"os"
-	"strings"
 )
-
-// byteRow converts from string to bytes.
-// if row is not contains "\n", adds to the end of the line.
-func byteRow(row string) []byte {
-	if !strings.Contains(row, "\n") {
-		row += "\n"
-	}
-	return []byte(row)
-}
 
 // Check that the path exist
 // if path does not exist, return false
