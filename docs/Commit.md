@@ -47,16 +47,24 @@ module.exports = {
 ```
 
 Installs husky
-```npm install husky --save-dev```
+```
+npm install husky --save-dev
+```
 
 Enables husky hooks
-```npx husky install``
+```
+npx husky install
+```
 
 Adds a prepare script that will install husky hooks upon installation
-```npm set-script prepare "husky install"```
+```
+npm set-script prepare "husky install"
+```
 
 Adds a husky pre-commit hook that will run before the code is committed
-```npx husky add .husky/commit-msg "npx --no -- commitlint --edit $1"```
+```
+npx husky add .husky/commit-msg "npx --no -- commitlint --edit $1"
+```
 
 
 ## 🎈 Usage <a name="usage"></a>
