@@ -15,9 +15,13 @@
 vendor/
 
 # node
+.husky
 node_modules
 package-lock.json
 package.json
+
+# JS scripts
+*.js
 
 # test folder
 data/test/
