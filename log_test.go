@@ -20,5 +20,5 @@ func TestInit(t *testing.T) {
 }
 
 func TestLog(t *testing.T) {
-	stdout("Это строка для стандартного вывода.\n")
+	stdout("This is simple row.\n")
 }
