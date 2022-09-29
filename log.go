@@ -1,13 +1,14 @@
 package jlog
 
 import (
+	"fmt"
 	"io"
 	"os"
 )
 
 type jlog struct {
 	location string // Folder with log files
-	format string // date format
+	format   string // date format
 }
 
 // Create new jLog.
@@ -15,7 +16,7 @@ type jlog struct {
 func Init(location string, format string) *jlog {
 	return &jlog{
 		location: location,
-		format: format,
+		format:   format,
 	}
 }
 
@@ -39,6 +40,11 @@ func (j *jlog) stdout(message string) {
 	if !charEndOfLine(message, "\n") {
 		message = message + "\n"
 	}
-	message = timeNow(j.format) + " " + message
-	io.WriteString(os.Stdout, message)
+	log := j.logTemplate(timeNow(j.format), message)
+	io.WriteString(os.Stdout, log)
+}
+
+// logTemplate returns a string in a specific format.
+func (j *jlog) logTemplate(date string, message string) string {
+	return fmt.Sprintf("[%s][preffix]: %s", date, message)
 }
