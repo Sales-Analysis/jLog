@@ -54,10 +54,10 @@ func TestLog(t *testing.T) {
 	format := "2006-01-02 15:04:05"
 
 	j := Init(location, format)
-	
+
 	message := "This is simple row."
 	captureOutput(func() {
-		j.stdout(message)
+		j.stdout("DUMMY", message)
 	})
 }
 
