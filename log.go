@@ -65,14 +65,14 @@ func (j *jlog) stdout(prefix string, message string) {
 	if !charEndOfLine(message, "\n") {
 		message = message + "\n"
 	}
-	p := prefixColor(prefix)
+	p := getPrefixColor(prefix)
 	t := getTimeColor(timeNow(j.format))
 	log := j.logTemplate(t, p, message)
 	io.WriteString(os.Stdout, log)
 }
 
 // prefixColor returns the colored status
-func prefixColor(prefix string) string {
+func getPrefixColor(prefix string) string {
 	switch prefix {
 	case info:
 		return fmt.Sprintf("%s[%s]%s", infoColor, prefix, resetColor)
