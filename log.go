@@ -11,6 +11,7 @@ const (
 	info 	= "INFO"
 	warning = "WARNING"
 	err     = "ERROR"
+	dummy   = "DUMMY"
 )
 
 // status colors
@@ -18,6 +19,7 @@ const (
 	infoColor = "\u001B[34;1m"
 	warningColor = "\u001B[33m"
 	errorColor = "\u001B[31m"
+	dummyColor = "\u001B[35m"
 
 	timeColor = "\u001b[32m"
 
@@ -55,6 +57,10 @@ func (j *jlog) Error(message string) {
 	j.stdout(err, message)
 }
 
+func (j *jlog) Dummy(message string) {
+	j.stdout(dummy, message)
+}
+
 // Stdout writes the output for a logging event.
 func (j *jlog) stdout(prefix string, message string) {
 	if !charEndOfLine(message, "\n") {
@@ -75,8 +81,11 @@ func prefixColor(prefix string) string {
 		return fmt.Sprintf("%s[%s]%s", warningColor, prefix, resetColor)
 	case err:
 		return fmt.Sprintf("%s[%s]%s", errorColor, prefix, resetColor)
+	case dummy:
+		return fmt.Sprintf("%s[%s]%s", dummyColor, prefix, resetColor)
+	default: 
+		return fmt.Sprintf("[%s]", prefix)
 	}
-	return prefix
 }
 
 // getTimeColor returns the colored time
