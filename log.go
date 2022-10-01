@@ -36,15 +36,15 @@ func (j *jlog) Error(message string) {
 }
 
 // Stdout writes the output for a logging event.
-func (j *jlog) stdout(preffix string, message string) {
+func (j *jlog) stdout(prefix string, message string) {
 	if !charEndOfLine(message, "\n") {
 		message = message + "\n"
 	}
-	log := j.logTemplate(timeNow(j.format), preffix, message)
+	log := j.logTemplate(timeNow(j.format), prefix, message)
 	io.WriteString(os.Stdout, log)
 }
 
 // logTemplate returns a string in a specific format.
-func (j *jlog) logTemplate(date string, preffix string, message string) string {
-	return fmt.Sprintf("[%s][%s]: %s", date, preffix, message)
+func (j *jlog) logTemplate(date string, prefix string, message string) string {
+	return fmt.Sprintf("[%s][%s]: %s", date, prefix, message)
 }
