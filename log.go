@@ -19,6 +19,8 @@ const (
 	warningColor = "\u001B[33m"
 	errorColor = "\u001B[31m"
 
+	timeColor = "\u001b[32m"
+
 	// reset color
 	resetColor = "\u001B[0m"
 
@@ -59,10 +61,12 @@ func (j *jlog) stdout(prefix string, message string) {
 		message = message + "\n"
 	}
 	p := prefixColor(prefix)
-	log := j.logTemplate(timeNow(j.format), p, message)
+	t := getTimeColor(timeNow(j.format))
+	log := j.logTemplate(t, p, message)
 	io.WriteString(os.Stdout, log)
 }
 
+// prefixColor returns the colored status
 func prefixColor(prefix string) string {
 	switch prefix {
 	case info:
@@ -75,7 +79,12 @@ func prefixColor(prefix string) string {
 	return prefix
 }
 
+// getTimeColor returns the colored time
+func getTimeColor(time string) string {
+	return fmt.Sprintf("%s[%s]%s", timeColor, time, resetColor)
+}
+
 // logTemplate returns a string in a specific format.
 func (j *jlog) logTemplate(date string, prefix string, message string) string {
-	return fmt.Sprintf("[%s]%s: %s", date, prefix, message)
+	return fmt.Sprintf("%s%s: %s", date, prefix, message)
 }
