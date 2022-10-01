@@ -11,13 +11,13 @@
 
 ## 📝 Table of Contents
 
-- [About](#about)
-- [Getting Started](#getting_started)
-- [Installing](#installing)
-- [Running](#deployment)
-- [Usage](#usage)
-- [Built Using](#built_using)
-- [Developer convention](#Developer_convention)
+- ~~[About](#about)~~
+- ~~[Getting Started](#getting_started)~~
+- ~~[Installing](#installing)~~
+- ~~[Running](#deployment)~~
+- ~~[Usage](#usage)~~
+- ~~[Built Using](#built_using)~~
+- ~~[Developer convention](#Developer_convention)~~
 
 
 ## 💭 Developer convention
