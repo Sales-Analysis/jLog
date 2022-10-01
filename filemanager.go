@@ -5,7 +5,7 @@ import (
 )
 
 // Write writes data to a file named by filename.
-func Write(message string, filename string) {
+func write(message string, filename string) {
 	if !charEndOfLine(message, "\n") {
 		message += "\n"
 	}
