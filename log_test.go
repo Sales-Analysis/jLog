@@ -17,6 +17,9 @@ func TestInit(t *testing.T) {
 		t.Errorf("Location is not equal")
 	}
 
+	j.Info("This is info")
+	j.Warning("This is warning")
+	j.Error("This is error")
 	/*
 		//check stdout info
 		infoMessage := "This is info\n"
@@ -57,7 +60,7 @@ func TestLog(t *testing.T) {
 	
 	message := "This is simple row."
 	captureOutput(func() {
-		j.stdout(message)
+		j.stdout("DUMMY", message)
 	})
 }
 
