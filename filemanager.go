@@ -35,12 +35,14 @@ func checkDirs(path string) bool {
 }
 
 // Creates missing folders
-func createDir(path string, many bool) {
+func createDir(path string, many bool) error {
 	if !checkDirs(path) {
-		if many {
-			_ = os.MkdirAll(path, 0777)
-		} else {
-			_ = os.Mkdir(path, 0777)
+		switch many {
+		case true:
+			return os.MkdirAll(path, 0777)
+		default:
+			return os.Mkdir(path, 0777)
 		}
 	}
+	return nil
 }

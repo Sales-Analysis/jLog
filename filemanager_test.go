@@ -20,7 +20,10 @@ func TestCheckDirsNegative(t *testing.T) {
 
 func TestCreateDir(t *testing.T) {
 	path := "./data/test/test_folder"
-	createDir(path, false)
+	err := createDir(path, false)
+	if err != nil {
+		t.Errorf("Сouldn't create a folder")
+	}
 	if !checkDirs(path) {
 		t.Errorf("Floder not exist")
 	}
