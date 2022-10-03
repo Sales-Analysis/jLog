@@ -56,6 +56,7 @@ func (j *jlog) Error(message string) {
 	j.stdout(err, message)
 }
 
+// Dummy is useless log.
 func (j *jlog) Dummy(message string) {
 	j.stdout(dummy, message)
 }
