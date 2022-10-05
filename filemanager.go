@@ -1,6 +1,7 @@
 package jlog
 
 import (
+	"fmt"
 	"os"
 )
 
@@ -45,4 +46,11 @@ func createDir(path string, many bool) error {
 		}
 	}
 	return nil
+}
+
+// makeFilename create name file. 
+// Format <format>.log
+func makeFilename(format string) string {
+	t := timeNow(format)
+	return fmt.Sprintf("%s.log", t)
 }
