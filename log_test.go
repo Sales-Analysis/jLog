@@ -8,7 +8,7 @@ import (
 )
 
 func TestInit(t *testing.T) {
-	location := "./data/test"
+	location := "./data/test/logger"
 	format := "2006-01-02 15:04:05"
 
 	j := Init(location, format)
