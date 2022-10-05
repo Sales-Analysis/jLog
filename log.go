@@ -101,12 +101,13 @@ func (j *jlog) logTemplate(date string, prefix string, message string) string {
 
 func toFile(location string, message string) {
 	createDir(location, false)
-
+	
+	filename := makeFilename("20060102")
 	var path string
 	if charEndOfLine(location, "/") {
-		path = location + "test.log"
+		path = location + filename
 	} else {
-		path = location + "/" + "test.log"
+		path = location + "/" + filename
 	}
 	write(path, message)
 }
