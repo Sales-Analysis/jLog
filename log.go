@@ -104,6 +104,7 @@ func (j *jlog) logTemplate(date string, prefix string, message string) string {
 	return fmt.Sprintf("%s%s: %s", date, prefix, message)
 }
 
+// toFile write log to file
 func toFile(location string, logFormat string, message string) {
 	createDir(location, false)
 	
