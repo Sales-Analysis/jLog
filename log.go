@@ -33,7 +33,7 @@ const defaultFilename = "20060102"
 type jlog struct {
 	location string // Folder with log files
 	format   string // date format
-	filename string // format log file name
+	filename string // format log file name. Сan be an empty string. default value "20060102".
 }
 
 // Create new jLog.
