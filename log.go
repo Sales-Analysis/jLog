@@ -27,17 +27,22 @@ const (
 	resetColor = "\u001B[0m"
 )
 
+// default value format log file name
+const defaultFilename = "20060102"
+
 type jlog struct {
 	location string // Folder with log files
 	format   string // date format
+	filename string // format log file name
 }
 
 // Create new jLog.
 // The location variable sets the folder with log files.
-func Init(location string, format string) *jlog {
+func Init(location string, format string, filename string) *jlog {
 	return &jlog{
 		location: location,
 		format:   format,
+		filename: filename,
 	}
 }
 
@@ -70,7 +75,7 @@ func (j *jlog) stdout(prefix string, message string) {
 	t := getTimeColor(timeNow(j.format))
 	log := j.logTemplate(t, p, message)
 	io.WriteString(os.Stdout, log)
-	toFile(j.location, log)
+	toFile(j.location, j.filename, log)
 }
 
 // prefixColor returns the colored status
@@ -99,10 +104,14 @@ func (j *jlog) logTemplate(date string, prefix string, message string) string {
 	return fmt.Sprintf("%s%s: %s", date, prefix, message)
 }
 
-func toFile(location string, message string) {
+func toFile(location string, logFormat string, message string) {
 	createDir(location, false)
 	
-	filename := makeFilename("20060102")
+	if logFormat == "" {
+		logFormat = defaultFilename
+	}
+	filename := makeFilename(logFormat)
+	
 	var path string
 	if charEndOfLine(location, "/") {
 		path = location + filename

@@ -11,7 +11,7 @@ func TestInit(t *testing.T) {
 	location := "./data/test/logger"
 	format := "2006-01-02 15:04:05"
 
-	j := Init(location, format)
+	j := Init(location, format, "2006 01 02")
 	// test struct
 	if location != j.location {
 		t.Errorf("Location is not equal")
@@ -56,7 +56,7 @@ func TestLog(t *testing.T) {
 	location := "./data/test/logger"
 	format := "2006-01-02 15:04:05"
 
-	j := Init(location, format)
+	j := Init(location, format, "")
 
 	message := "This is simple row."
 	captureOutput(func() {
