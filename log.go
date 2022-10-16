@@ -74,8 +74,9 @@ func (j *jlog) stdout(prefix string, message string) {
 	p := getPrefixColor(prefix)
 	t := getTimeColor(timeNow(j.format))
 	log := j.logTemplate(t, p, message)
+	logStdout := j.logTemplateFile(timeNow(j.format), prefix, message)
 	io.WriteString(os.Stdout, log)
-	toFile(j.location, j.filename, log)
+	toFile(j.location, j.filename, logStdout)
 }
 
 // prefixColor returns the colored status
@@ -102,6 +103,11 @@ func getTimeColor(time string) string {
 // logTemplate returns a string in a specific format.
 func (j *jlog) logTemplate(date string, prefix string, message string) string {
 	return fmt.Sprintf("%s%s: %s", date, prefix, message)
+}
+
+// logTemplateFile returns a string in a specific format.
+func (j *jlog) logTemplateFile(date string, prefix string, message string) string {
+	return fmt.Sprintf("[%s][%s]: %s", date, prefix, message)
 }
 
 // toFile write log to file
