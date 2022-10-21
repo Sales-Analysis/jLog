@@ -1,11 +1,12 @@
 package jlog
 
 import (
+	"fmt"
 	"os"
 )
 
 // Write writes data to a file named by filename.
-func write(message string, filename string) {
+func write(filename string, message string) {
 	if !charEndOfLine(message, "\n") {
 		message += "\n"
 	}
@@ -35,12 +36,21 @@ func checkDirs(path string) bool {
 }
 
 // Creates missing folders
-func createDir(path string, many bool) {
+func createDir(path string, many bool) error {
 	if !checkDirs(path) {
-		if many {
-			_ = os.MkdirAll(path, 0777)
-		} else {
-			_ = os.Mkdir(path, 0777)
+		switch many {
+		case true:
+			return os.MkdirAll(path, 0777)
+		default:
+			return os.Mkdir(path, 0777)
 		}
 	}
+	return nil
+}
+
+// makeFilename create name file. 
+// Format <format>.log
+func makeFilename(format string) string {
+	t := timeNow(format)
+	return fmt.Sprintf("%s.log", t)
 }

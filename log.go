@@ -27,17 +27,22 @@ const (
 	resetColor = "\u001B[0m"
 )
 
+// default value format log file name
+const defaultFilename = "20060102"
+
 type jlog struct {
 	location string // Folder with log files
 	format   string // date format
+	filename string // format log file name. Сan be an empty string. default value "20060102".
 }
 
 // Create new jLog.
 // The location variable sets the folder with log files.
-func Init(location string, format string) *jlog {
+func Init(location string, format string, filename string) *jlog {
 	return &jlog{
 		location: location,
 		format:   format,
+		filename: filename,
 	}
 }
 
@@ -56,6 +61,7 @@ func (j *jlog) Error(message string) {
 	j.stdout(err, message)
 }
 
+// Dummy is useless log.
 func (j *jlog) Dummy(message string) {
 	j.stdout(dummy, message)
 }
@@ -68,7 +74,9 @@ func (j *jlog) stdout(prefix string, message string) {
 	p := getPrefixColor(prefix)
 	t := getTimeColor(timeNow(j.format))
 	log := j.logTemplate(t, p, message)
+	logStdout := j.logTemplateFile(timeNow(j.format), prefix, message)
 	io.WriteString(os.Stdout, log)
+	toFile(j.location, j.filename, logStdout)
 }
 
 // prefixColor returns the colored status
@@ -95,4 +103,27 @@ func getTimeColor(time string) string {
 // logTemplate returns a string in a specific format.
 func (j *jlog) logTemplate(date string, prefix string, message string) string {
 	return fmt.Sprintf("%s%s: %s", date, prefix, message)
+}
+
+// logTemplateFile returns a string in a specific format.
+func (j *jlog) logTemplateFile(date string, prefix string, message string) string {
+	return fmt.Sprintf("[%s][%s]: %s", date, prefix, message)
+}
+
+// toFile write log to file
+func toFile(location string, logFormat string, message string) {
+	createDir(location, false)
+	
+	if logFormat == "" {
+		logFormat = defaultFilename
+	}
+	filename := makeFilename(logFormat)
+	
+	var path string
+	if charEndOfLine(location, "/") {
+		path = location + filename
+	} else {
+		path = location + "/" + filename
+	}
+	write(path, message)
 }

@@ -1,6 +1,7 @@
 package jlog
 
 import (
+	"fmt"
 	"testing"
 )
 
@@ -20,7 +21,10 @@ func TestCheckDirsNegative(t *testing.T) {
 
 func TestCreateDir(t *testing.T) {
 	path := "./data/test/test_folder"
-	createDir(path, false)
+	err := createDir(path, false)
+	if err != nil {
+		t.Errorf("Сouldn't create a folder")
+	}
 	if !checkDirs(path) {
 		t.Errorf("Floder not exist")
 	}
@@ -31,5 +35,14 @@ func TestCreateDirMany(t *testing.T) {
 	createDir(path, true)
 	if !checkDirs(path) {
 		t.Errorf("Floder not exist")
+	}
+}
+
+func TestMakeFilename(t *testing.T) {
+	format := "20060102"
+	filename := makeFilename("20060102")
+	testFilename := fmt.Sprintf("%s.log", timeNow(format))
+	if filename != testFilename {
+		t.Errorf("file name is not equal test value")
 	}
 }
