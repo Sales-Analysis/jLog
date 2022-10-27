@@ -59,9 +59,10 @@ func TestLog(t *testing.T) {
 	j := Init(location, format, "")
 
 	message := "This is simple row."
-	captureOutput(func() {
-		j.stdout("DUMMY", message)
-	})
+	j.Dummy(message)
+	// captureOutput(func() {
+	//	j.stdout("DUMMY", message)
+	// })
 }
 
 func captureOutput(f func()) string {

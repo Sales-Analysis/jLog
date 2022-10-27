@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"runtime"
 )
 
 // Status constants
@@ -48,29 +49,35 @@ func Init(location string, format string, filename string) *jlog {
 
 // Info calls stdout to print to the logger.
 func (j *jlog) Info(message string) {
-	j.stdout(info, message)
+	counter, _, _, _ := runtime.Caller(1)
+	j.stdout(dummy, message, counter)
 }
 
 // Warning is equivalent ot Info.
 func (j *jlog) Warning(message string) {
-	j.stdout(warning, message)
+	counter, _, _, _ := runtime.Caller(1)
+	j.stdout(dummy, message, counter)
 }
 
 // Error is equivalent ot Info.
 func (j *jlog) Error(message string) {
-	j.stdout(err, message)
+	counter, _, _, _ := runtime.Caller(1)
+	j.stdout(dummy, message, counter)
 }
 
 // Dummy is useless log.
 func (j *jlog) Dummy(message string) {
-	j.stdout(dummy, message)
+	counter, _, _, _ := runtime.Caller(1)
+	j.stdout(dummy, message, counter)
 }
 
 // Stdout writes the output for a logging event.
-func (j *jlog) stdout(prefix string, message string) {
+func (j *jlog) stdout(prefix string, message string, counter uintptr) {
 	if !charEndOfLine(message, "\n") {
 		message = message + "\n"
 	}
+	packageName, funcName := getPackageInfo(counter)
+	fmt.Println(packageName, funcName)
 	p := getPrefixColor(prefix)
 	t := getTimeColor(timeNow(j.format))
 	log := j.logTemplate(t, p, message)
