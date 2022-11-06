@@ -78,9 +78,8 @@ func (j *jlog) stdout(prefix string, message string, counter uintptr) {
 		message = message + "\n"
 	}
 	packageName, funName := getPackageInfo(counter)
-	fmt.Println(packageName, funName)
 	
-	t := getTimeColor(timeNow(j.format))
+	t := getColor(timeNow(j.format), timeColor)
 	pkg := getColor(packageName, packageColor)
 	fun := getColor(funName, funColor)
 	p := getPrefixColor(prefix)
@@ -111,11 +110,6 @@ func getPrefixColor(prefix string) string {
 // getColor returns the colored string
 func getColor(str string, color string) string {
 	return fmt.Sprintf("%s[%s]%s", color, str, resetColor)
-}
-
-// getTimeColor returns the colored time
-func getTimeColor(time string) string {
-	return fmt.Sprintf("%s[%s]%s", timeColor, time, resetColor)
 }
 
 // logTemplate returns a string in a specific format.
