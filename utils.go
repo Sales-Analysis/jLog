@@ -1,5 +1,10 @@
 package jlog
-import "time"
+
+import (
+	"runtime"
+	"strings"
+	"time"
+)
 
 // Check character in end of line.
 func charEndOfLine(row string, char string) bool {
@@ -10,4 +15,12 @@ func charEndOfLine(row string, char string) bool {
 // Variable format to represent the date format.
 func timeNow(format string) string {
 	return time.Now().Format(format)
+}
+
+// getPackageInfo returns name package and function.
+func getPackageInfo(counter uintptr) (string, string){
+	name := runtime.FuncForPC(counter).Name()
+	strs := strings.Split(name, "/")
+	info := strings.Split(strs[len(strs)-1], ".")
+	return info[0], info[len(info)-1]
 }
