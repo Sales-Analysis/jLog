@@ -5,6 +5,8 @@ import (
 	"io"
 	"os"
 	"runtime"
+
+	"github.com/Sales-Analysis/jLog/internal/dotenv"
 )
 
 // Status constants
@@ -26,7 +28,7 @@ const (
 	packageColor = "\u001b[35;1m"
 	funColor     = "\u001b[34;1m"
 	// reset color
-	resetColor   = "\u001B[0m"
+	resetColor = "\u001B[0m"
 )
 
 // default value format log file name
@@ -41,6 +43,10 @@ type jlog struct {
 // Create new jLog.
 // The location variable sets the folder with log files.
 func Init(location string, format string, filename string) *jlog {
+	err := dotenv.Load("./.env")
+	if err != nil {
+		fmt.Println(".env not found.")
+	}
 	return &jlog{
 		location: location,
 		format:   format,
@@ -78,7 +84,7 @@ func (j *jlog) stdout(prefix string, message string, counter uintptr) {
 		message = message + "\n"
 	}
 	packageName, funName := getPackageInfo(counter)
-	
+
 	t := getColor(timeNow(j.format), timeColor)
 	pkg := getColor(packageName, packageColor)
 	fun := getColor(funName, funColor)
@@ -86,7 +92,7 @@ func (j *jlog) stdout(prefix string, message string, counter uintptr) {
 
 	log := j.logTemplate(t, pkg, fun, p, message)
 	logStdout := j.logTemplateFile(timeNow(j.format), packageName, funName, prefix, message)
-	
+
 	io.WriteString(os.Stdout, log)
 	toFile(j.location, j.filename, logStdout)
 }
@@ -125,12 +131,12 @@ func (j *jlog) logTemplateFile(date string, pkg string, fun string, prefix strin
 // toFile write log to file
 func toFile(location string, logFormat string, message string) {
 	createDir(location, false)
-	
+
 	if logFormat == "" {
 		logFormat = defaultFilename
 	}
 	filename := makeFilename(logFormat)
-	
+
 	var path string
 	if charEndOfLine(location, "/") {
 		path = location + filename
