@@ -42,13 +42,22 @@ type jlog struct {
 
 // Create new jLog.
 // The location variable sets the folder with log files.
-func Init(location string, format string, filename string) *jlog {
-	_ = dotenv.Load("./.env")
+func Init(location string, format string, filename string, envFile string) *jlog {
+	err := dotenv.Load(envFile)
+	if err != nil {
+		fmt.Printf("%s\nDefault parameters are assigned.", err)
+		setDefaultParams()
+	}
 	return &jlog{
 		location: location,
 		format:   format,
 		filename: filename,
 	}
+}
+
+// Set default parameters.
+func setDefaultParams() {
+	os.Setenv("FORMAT_FILENAME", defaultFilename)
 }
 
 // Info calls stdout to print to the logger.
@@ -130,7 +139,7 @@ func toFile(location string, logFormat string, message string) {
 	createDir(location, false)
 
 	if logFormat == "" {
-		logFormat = defaultFilename
+		logFormat = os.Getenv("FORMAT_FILENAME")
 	}
 	filename := makeFilename(logFormat)
 
