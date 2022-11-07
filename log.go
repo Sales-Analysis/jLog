@@ -43,10 +43,7 @@ type jlog struct {
 // Create new jLog.
 // The location variable sets the folder with log files.
 func Init(location string, format string, filename string) *jlog {
-	err := dotenv.Load("./.env")
-	if err != nil {
-		fmt.Println(".env not found.")
-	}
+	_ = dotenv.Load("./.env")
 	return &jlog{
 		location: location,
 		format:   format,
