@@ -45,7 +45,7 @@ type jlog struct {
 func Init(location string, format string, filename string, envFile string) *jlog {
 	err := dotenv.Load(envFile)
 	if err != nil {
-		fmt.Printf("%s\nDefault parameters are assigned.", err)
+		fmt.Printf("%s.\nDefault parameters are assigned.\n", err)
 		setDefaultParams()
 	}
 	return &jlog{
