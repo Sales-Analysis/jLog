@@ -38,7 +38,7 @@ func parseFile(r io.Reader) (map[string]string, error) {
 	scanner := bufio.NewScanner(r)
 	for scanner.Scan() {
 		str := scanner.Text()
-		if strings.Contains(str, "#") {
+		if strings.Contains(str, "#") || len(str) <= 2 {
 			continue
 		}
 		splitStr := strings.Split(str, "=")
