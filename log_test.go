@@ -9,9 +9,8 @@ import (
 
 func TestInit(t *testing.T) {
 	location := "./data/test/logger"
-	format := "2006-01-02 15:04:05"
 
-	j := Init(location, format, "./.env")
+	j := Init(location, "./.env")
 	// test struct
 	if location != j.location {
 		t.Errorf("Location is not equal")
@@ -24,9 +23,8 @@ func TestInit(t *testing.T) {
 
 func TestLog(t *testing.T) {
 	location := "./data/test/logger"
-	format := "2006-01-02 15:04:05"
 
-	j := Init(location, format, "./.env")
+	j := Init(location, "./.env")
 
 	message := "This is simple row."
 	j.Dummy(message)
