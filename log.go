@@ -54,9 +54,9 @@ func Init(location string, envFile string) *jlog {
 
 // Set default parameters.
 func setDefaultParams() {
-	// default value format log file name
+	// Format log file name
 	os.Setenv("FORMAT_FILENAME", "20060102")
-	// default value format log
+	// Format log
 	os.Setenv("FORMAT_LOG", "2006-01-02 15:04:05")
 }
 
