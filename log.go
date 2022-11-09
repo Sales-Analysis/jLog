@@ -31,9 +31,6 @@ const (
 	resetColor = "\u001B[0m"
 )
 
-// default value format log file name
-const defaultFilename = "20060102"
-
 type jlog struct {
 	location string // Folder with log files
 	format   string // date format
@@ -42,7 +39,7 @@ type jlog struct {
 
 // Create new jLog.
 // The location variable sets the folder with log files.
-func Init(location string, format string, envFile string) *jlog {
+func Init(location string, envFile string) *jlog {
 	err := dotenv.Load(envFile)
 	if err != nil {
 		fmt.Printf("%s.\nDefault parameters are assigned.\n", err)
@@ -50,14 +47,17 @@ func Init(location string, format string, envFile string) *jlog {
 	}
 	return &jlog{
 		location: location,
-		format:   format,
+		format:   os.Getenv("FORMAT_LOG"),
 		filename: os.Getenv("FORMAT_FILENAME"),
 	}
 }
 
 // Set default parameters.
 func setDefaultParams() {
-	os.Setenv("FORMAT_FILENAME", defaultFilename)
+	// default value format log file name
+	os.Setenv("FORMAT_FILENAME", "20060102")
+	// default value format log
+	os.Setenv("FORMAT_LOG", "2006-01-02 15:04:05")
 }
 
 // Info calls stdout to print to the logger.
