@@ -43,7 +43,7 @@ func parseFile(r io.Reader) (map[string]string, error) {
 		}
 		splitStr := strings.Split(str, "=")
 		key := strings.ReplaceAll(splitStr[0], " ", "")
-		value := strings.ReplaceAll(splitStr[1], " ", "")
+		value := strings.TrimSpace(splitStr[1])
 		values[key] = value
 	}
 	err := scanner.Err()
