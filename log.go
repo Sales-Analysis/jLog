@@ -5,6 +5,7 @@ import (
 	"io"
 	"os"
 	"runtime"
+	"strings"
 
 	"github.com/Sales-Analysis/jLog/internal/dotenv"
 )
@@ -94,14 +95,15 @@ func (j *jlog) stdout(prefix string, message string, counter uintptr) {
 		message = message + "\n"
 	}
 	packageName, funName := getPackageInfo(counter)
-
-	t := getColor(timeNow(j.format), timeColor)
+	time_string := timeNow(j.format)
+	t := getColor(time_string, timeColor)
 	pkg := getColor(packageName, packageColor)
 	fun := getColor(funName, funColor)
 	p := getPrefixColor(prefix)
 
 	log := j.logTemplate(t, pkg, fun, p, message)
-	logStdout := j.logTemplateFile(timeNow(j.format), packageName, funName, prefix, message)
+	row := []string{timeNow(j.format), packageName, funName, prefix, message}
+	logStdout := j.logTemplateFile(row...)
 
 	io.WriteString(os.Stdout, log)
 	toFile(j.location, j.filename, logStdout)
@@ -134,8 +136,26 @@ func (j *jlog) logTemplate(date string, pkg string, fun string, prefix string, m
 }
 
 // logTemplateFile returns a string in a specific format.
-func (j *jlog) logTemplateFile(date string, pkg string, fun string, prefix string, message string) string {
-	return fmt.Sprintf("[%s][%s][%s][%s]: %s", date, pkg, fun, prefix, message)
+func (j *jlog) logTemplateFile(str ...string) string {
+	sep := os.Getenv("SEPARATOR")
+	s := []string{sep}
+	if len(sep) > 1 {
+		s = strings.Split(sep, ",")
+	}
+	row := ""
+	for i, v := range str {
+		if i != (len(str) - 1) {
+			if len(sep) > 1 {
+				v = s[0] + v + s[1]
+			} else {
+				v = s[0] + v
+			}
+		} else {
+			v = ": " + v
+		}
+		row += v
+	}
+	return row
 }
 
 // toFile write log to file
