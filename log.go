@@ -32,22 +32,21 @@ const (
 )
 
 type jlog struct {
-	location string // Folder with log files
-	format   string // date format
-	filename string // format log file name. Сan be an empty string. default value "20060102".
+	location string // Folder with log files. Default value "logger".
+	format   string // date format. Default value "2006-01-02 15:04:05".
+	filename string // format log file name. Сan be an empty string. Default value "20060102".
 }
 
 // Create new jLog.
 // The location variable sets the folder with log files.
-func Init(location string, envFile string) *jlog {
-	// TODO: location перенести из переменной в .env
+func Init(envFile string) *jlog {
 	err := dotenv.Load(envFile)
 	if err != nil {
 		fmt.Printf("%s.\nDefault parameters are assigned.\n", err)
 		setDefaultParams()
 	}
 	return &jlog{
-		location: location,
+		location: os.Getenv("LOCATION"),
 		format:   os.Getenv("FORMAT_TIME_LOG"),
 		filename: os.Getenv("FORMAT_FILENAME"),
 	}
@@ -55,10 +54,14 @@ func Init(location string, envFile string) *jlog {
 
 // Set default parameters.
 func setDefaultParams() {
+	// Folder with log files
+	os.Setenv("LOCATION", "logger")
 	// Format log file name
 	os.Setenv("FORMAT_FILENAME", "20060102")
 	// Format log
 	os.Setenv("FORMAT_TIME_LOG", "2006-01-02 15:04:05")
+	// Separator
+	os.Setenv("SEPARATOR", "[]")
 }
 
 // Info calls stdout to print to the logger.
