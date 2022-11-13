@@ -5,7 +5,6 @@ import (
 	"io"
 	"os"
 	"runtime"
-	"strings"
 
 	"github.com/Sales-Analysis/jLog/internal/dotenv"
 )
@@ -138,18 +137,21 @@ func (j *jlog) logTemplate(date string, pkg string, fun string, prefix string, m
 // logTemplateFile returns a string in a specific format.
 func (j *jlog) logTemplateFile(str ...string) string {
 	sep := os.Getenv("SEPARATOR")
-	s := []string{sep}
-	if len(sep) > 1 {
-		s = strings.Split(sep, ",")
-	}
+	return addSep(sep, str...)
+}
+
+
+// addStep add separator for str. 
+func addSep(sep string, str ...string) string{
+	charSep := []rune(sep)
 	row := ""
 	for i, v := range str {
 		if i != (len(str) - 1) {
 			if len(sep) > 1 {
-				v = s[0] + v + s[1]
+				v = string(charSep[0]) + v + string(charSep[1])
 			} else {
-				v = s[0] + v
-			}
+				v = string(charSep[0]) + v
+			}			
 		} else {
 			v = ": " + v
 		}
