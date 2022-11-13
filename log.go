@@ -19,7 +19,7 @@ const (
 
 // status colors
 const (
-	infoColor    = "\u001B[34;1m"
+	infoColor    = "\u001B[34m"
 	warningColor = "\u001B[33m"
 	errorColor   = "\u001B[31m"
 	dummyColor   = "\u001B[35m"
