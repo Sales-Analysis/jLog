@@ -108,21 +108,26 @@ func (j *jlog) stdout(prefix string, message string, counter uintptr) {
 	toFile(j.location, j.filename, logStdout)
 }
 
-// prefixColor returns the colored status
+// prefixColor returns the colored status.
 func getPrefixColor(prefix string) string {
 	sep := os.Getenv("SEPARATOR")
-	switch prefix {
+	color := getStatusColor(prefix)
+	p := sepStr(prefix, sep)
+	return fmt.Sprintf("%s%s%s", color, p, resetColor)
+}
+
+// getStatusColor returns the status color.
+func getStatusColor(status string) string {
+	switch status {
 	case info:
-		return fmt.Sprintf("%s%s%s", infoColor, sepStr(prefix, sep), resetColor)
+		return infoColor
 	case warning:
-		return fmt.Sprintf("%s%s%s", warningColor, sepStr(prefix, sep), resetColor)
+		return warningColor
 	case err:
-		return fmt.Sprintf("%s%s%s", errorColor, sepStr(prefix, sep), resetColor)
-	case dummy:
-		return fmt.Sprintf("%s%s%s", dummyColor, sepStr(prefix, sep), resetColor)
+		return errorColor
 	default:
-		return fmt.Sprintf("%s", sepStr(prefix, sep))
-	}
+		return dummyColor
+	}	
 }
 
 // getColor returns the colored string
