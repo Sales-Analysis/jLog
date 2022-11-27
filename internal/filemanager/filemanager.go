@@ -26,14 +26,14 @@ func writeToFile(filename string, data []byte, perm os.FileMode) error {
 
 // Check that the path exist
 // if path does not exist, return false
-func checkDirs(path string) bool {
+func CheckDirs(path string) bool {
 	_, err := os.Stat(path)
 	return !os.IsNotExist(err)
 }
 
 // Creates missing folders
 func CreateDir(path string, many bool) error {
-	if !checkDirs(path) {
+	if !CheckDirs(path) {
 		switch many {
 		case true:
 			return os.MkdirAll(path, 0777)
@@ -43,10 +43,3 @@ func CreateDir(path string, many bool) error {
 	}
 	return nil
 }
-
-// makeFilename create name file. 
-// Format <format>.log
-// func makeFilename(format string) string {
-//	t := timeNow(format)
-//	return fmt.Sprintf("%s.log", t)
-// }
