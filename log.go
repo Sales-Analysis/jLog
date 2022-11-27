@@ -7,6 +7,7 @@ import (
 	"runtime"
 
 	"github.com/Sales-Analysis/jLog/internal/dotenv"
+	"github.com/Sales-Analysis/jLog/internal/filemanager"
 )
 
 // Status constants
@@ -178,7 +179,7 @@ func sepStr(str string, sep string) string {
 
 // toFile write log to file
 func toFile(location string, logFormat string, message string) {
-	createDir(location, false)
+	filemanager.CreateDir(location, false)
 
 	filename := makeFilename(logFormat)
 
@@ -188,5 +189,9 @@ func toFile(location string, logFormat string, message string) {
 	} else {
 		path = location + "/" + filename
 	}
-	write(path, message)
+	
+	if !charEndOfLine(message, "\n") {
+		message += "\n"
+	}
+	filemanager.Write(path, message)
 }

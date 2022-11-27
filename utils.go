@@ -1,6 +1,7 @@
 package jlog
 
 import (
+	"fmt"
 	"runtime"
 	"strings"
 	"time"
@@ -23,4 +24,11 @@ func getPackageInfo(counter uintptr) (string, string){
 	strs := strings.Split(name, "/")
 	info := strings.Split(strs[len(strs)-1], ".")
 	return info[0], info[len(info)-1]
+}
+
+// makeFilename create name file. 
+// Format <format>.log
+func makeFilename(format string) string {
+	t := timeNow(format)
+	return fmt.Sprintf("%s.log", t)
 }
