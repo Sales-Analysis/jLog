@@ -140,6 +140,20 @@ func (j *jlog) logTemplateFile(str ...string) string {
 	return addSep(sep, str...)
 }
 
+// addStep add separator for str. 
+func addSep(sep string, str ...string) string{
+	row := ""
+	for i, v := range str {
+		if i != (len(str) - 1) {
+			v = sepStr(v, sep)	
+		} else {
+			v = ": " + v
+		}
+		row += v
+	}
+	return row
+}
+
 // sep Str returns a delimited string.
 // If the length of the separator is equal to 1,
 // the separator is placed at the beginning.
@@ -153,25 +167,6 @@ func sepStr(str string, sep string) string {
 		s = string(charSep[0]) + str
 	}
 	return s
-}
-
-// addStep add separator for str. 
-func addSep(sep string, str ...string) string{
-	charSep := []rune(sep)
-	row := ""
-	for i, v := range str {
-		if i != (len(str) - 1) {
-			if len(sep) > 1 {
-				v = string(charSep[0]) + v + string(charSep[1])
-			} else {
-				v = string(charSep[0]) + v
-			}			
-		} else {
-			v = ": " + v
-		}
-		row += v
-	}
-	return row
 }
 
 // toFile write log to file
