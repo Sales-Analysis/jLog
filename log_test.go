@@ -22,6 +22,22 @@ func TestSepLengthTwo(t *testing.T) {
 	}
 }
 
+func TestAddSepLengthOne(t *testing.T) {
+	str := []string{"date", "package", "func", "message"}
+	s := addSep("|", str...)
+	if s != "|date|package|func: message" {
+		t.Errorf("String with sep is not qual")
+	}
+}
+
+func TestAddSepLengthTwo(t *testing.T) {
+	str := []string{"date", "package", "func", "message"}
+	s := addSep("[]", str...)
+	if s != "[date][package][func]: message" {
+		t.Errorf("String with sep is not qual")
+	}
+}
+
 func TestInit(t *testing.T) {
 	location := "./data/test/logger"
 
