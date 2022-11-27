@@ -7,6 +7,21 @@ import (
 	"testing"
 )
 
+
+func TestSepLengthOne(t *testing.T) {
+	s := sepStr("test", "|")
+	if s != "|test" {
+		t.Errorf("String with sep is not qual")
+	}
+}
+
+func TestSepLengthTwo(t *testing.T) {
+	s := sepStr("test", "[]")
+	if s != "[test]" {
+		t.Errorf("String with sep is not qual")
+	}
+}
+
 func TestInit(t *testing.T) {
 	location := "./data/test/logger"
 
