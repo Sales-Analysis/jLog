@@ -110,23 +110,26 @@ func (j *jlog) stdout(prefix string, message string, counter uintptr) {
 
 // prefixColor returns the colored status
 func getPrefixColor(prefix string) string {
+	sep := os.Getenv("SEPARATOR")
 	switch prefix {
 	case info:
-		return fmt.Sprintf("%s[%s]%s", infoColor, prefix, resetColor)
+		return fmt.Sprintf("%s%s%s", infoColor, sepStr(prefix, sep), resetColor)
 	case warning:
-		return fmt.Sprintf("%s[%s]%s", warningColor, prefix, resetColor)
+		return fmt.Sprintf("%s%s%s", warningColor, sepStr(prefix, sep), resetColor)
 	case err:
-		return fmt.Sprintf("%s[%s]%s", errorColor, prefix, resetColor)
+		return fmt.Sprintf("%s%s%s", errorColor, sepStr(prefix, sep), resetColor)
 	case dummy:
-		return fmt.Sprintf("%s[%s]%s", dummyColor, prefix, resetColor)
+		return fmt.Sprintf("%s%s%s", dummyColor, sepStr(prefix, sep), resetColor)
 	default:
-		return fmt.Sprintf("[%s]", prefix)
+		return fmt.Sprintf("%s", sepStr(prefix, sep))
 	}
 }
 
 // getColor returns the colored string
 func getColor(str string, color string) string {
-	return fmt.Sprintf("%s[%s]%s", color, str, resetColor)
+	sep := os.Getenv("SEPARATOR")
+	str = sepStr(str, sep)
+	return fmt.Sprintf("%s%s%s", color, str, resetColor)
 }
 
 // logTemplate returns a string in a specific format.
