@@ -140,6 +140,20 @@ func (j *jlog) logTemplateFile(str ...string) string {
 	return addSep(sep, str...)
 }
 
+// sep Str returns a delimited string.
+// If the length of the separator is equal to 1,
+// the separator is placed at the beginning.
+// The length of the separator can not be more than two
+func sepStr(str string, sep string) string {
+	charSep := []rune(sep)
+	s := ""
+	if len(sep) > 1 { 
+		s = string(charSep[0]) + str + string(charSep[1])
+	} else {
+		s = string(charSep[0]) + str
+	}
+	return s
+}
 
 // addStep add separator for str. 
 func addSep(sep string, str ...string) string{
