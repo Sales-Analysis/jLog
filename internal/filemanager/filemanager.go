@@ -1,15 +1,11 @@
-package jlog
+package filemanager
 
 import (
-	"fmt"
 	"os"
 )
 
 // Write writes data to a file named by filename.
-func write(filename string, message string) {
-	if !charEndOfLine(message, "\n") {
-		message += "\n"
-	}
+func Write(filename string, message string) {
 	writeToFile(filename, []byte(message), 0644)
 }
 
@@ -36,7 +32,7 @@ func checkDirs(path string) bool {
 }
 
 // Creates missing folders
-func createDir(path string, many bool) error {
+func CreateDir(path string, many bool) error {
 	if !checkDirs(path) {
 		switch many {
 		case true:
@@ -50,7 +46,7 @@ func createDir(path string, many bool) error {
 
 // makeFilename create name file. 
 // Format <format>.log
-func makeFilename(format string) string {
-	t := timeNow(format)
-	return fmt.Sprintf("%s.log", t)
-}
+// func makeFilename(format string) string {
+//	t := timeNow(format)
+//	return fmt.Sprintf("%s.log", t)
+// }
