@@ -35,6 +35,7 @@ type jlog struct {
 	location string // Folder with log files. Default value "logger".
 	format   string // date format. Default value "2006-01-02 15:04:05".
 	filename string // format log file name. Сan be an empty string. Default value "20060102".
+	separator string // message log separator.
 }
 
 // Create new jLog.
@@ -49,6 +50,7 @@ func Init(envFile string) *jlog {
 		location: os.Getenv("LOCATION"),
 		format:   os.Getenv("FORMAT_TIME_LOG"),
 		filename: os.Getenv("FORMAT_FILENAME"),
+		separator: os.Getenv("SEPARATOR"),
 	}
 }
 
@@ -95,10 +97,10 @@ func (j *jlog) stdout(prefix string, message string, counter uintptr) {
 	}
 	packageName, funName := getPackageInfo(counter)
 	time_string := timeNow(j.format)
-	t := getColor(time_string, timeColor)
-	pkg := getColor(packageName, packageColor)
-	fun := getColor(funName, funColor)
-	p := getPrefixColor(prefix)
+	t := j.getColor(time_string, timeColor)
+	pkg := j.getColor(packageName, packageColor)
+	fun := j.getColor(funName, funColor)
+	p := j.getPrefixColor(prefix)
 
 	log := j.logTemplate(t, pkg, fun, p, message)
 	row := []string{timeNow(j.format), packageName, funName, prefix, message}
@@ -109,10 +111,9 @@ func (j *jlog) stdout(prefix string, message string, counter uintptr) {
 }
 
 // prefixColor returns the colored status.
-func getPrefixColor(prefix string) string {
-	sep := os.Getenv("SEPARATOR")
+func (j *jlog) getPrefixColor(prefix string) string {
 	color := getStatusColor(prefix)
-	p := sepStr(prefix, sep)
+	p := sepStr(prefix, j.separator)
 	return fmt.Sprintf("%s%s%s", color, p, resetColor)
 }
 
@@ -131,9 +132,8 @@ func getStatusColor(status string) string {
 }
 
 // getColor returns the colored string
-func getColor(str string, color string) string {
-	sep := os.Getenv("SEPARATOR")
-	str = sepStr(str, sep)
+func (j *jlog) getColor(str string, color string) string {
+	str = sepStr(str, j.separator)
 	return fmt.Sprintf("%s%s%s", color, str, resetColor)
 }
 
@@ -144,8 +144,7 @@ func (j *jlog) logTemplate(date string, pkg string, fun string, prefix string, m
 
 // logTemplateFile returns a string in a specific format.
 func (j *jlog) logTemplateFile(str ...string) string {
-	sep := os.Getenv("SEPARATOR")
-	return addSep(sep, str...)
+	return addSep(j.separator, str...)
 }
 
 // addStep add separator for str. 
