@@ -7,7 +7,6 @@ import (
 	"testing"
 )
 
-
 func TestSepLengthOne(t *testing.T) {
 	s := sepStr("test", "|")
 	if s != "|test" {

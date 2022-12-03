@@ -6,7 +6,6 @@ import (
 	"os"
 	"runtime"
 
-	"github.com/Sales-Analysis/jLog/internal/dotenv"
 	"github.com/Sales-Analysis/jLog/internal/filemanager"
 )
 
@@ -33,38 +32,22 @@ const (
 )
 
 type jlog struct {
-	location string // Folder with log files. Default value "logger".
-	format   string // date format. Default value "2006-01-02 15:04:05".
-	filename string // format log file name. Сan be an empty string. Default value "20060102".
+	location  string // Folder with log files. Default value "logger".
+	format    string // date format. Default value "2006-01-02 15:04:05".
+	filename  string // format log file name. Сan be an empty string. Default value "20060102".
 	separator string // message log separator.
 }
 
 // Create new jLog.
 // The location variable sets the folder with log files.
 func Init(envFile string) *jlog {
-	err := dotenv.Load(envFile)
-	if err != nil {
-		fmt.Printf("%s.\nDefault parameters are assigned.\n", err)
-		setDefaultParams()
-	}
+	loadDotEnv(envFile)
 	return &jlog{
-		location: os.Getenv("LOCATION"),
-		format:   os.Getenv("FORMAT_TIME_LOG"),
-		filename: os.Getenv("FORMAT_FILENAME"),
+		location:  os.Getenv("LOCATION"),
+		format:    os.Getenv("FORMAT_TIME_LOG"),
+		filename:  os.Getenv("FORMAT_FILENAME"),
 		separator: os.Getenv("SEPARATOR"),
 	}
-}
-
-// Set default parameters.
-func setDefaultParams() {
-	// Folder with log files
-	os.Setenv("LOCATION", "logger")
-	// Format log file name
-	os.Setenv("FORMAT_FILENAME", "20060102")
-	// Format log
-	os.Setenv("FORMAT_TIME_LOG", "2006-01-02 15:04:05")
-	// Separator
-	os.Setenv("SEPARATOR", "[]")
 }
 
 // Info calls stdout to print to the logger.
@@ -129,7 +112,7 @@ func getStatusColor(status string) string {
 		return errorColor
 	default:
 		return dummyColor
-	}	
+	}
 }
 
 // getColor returns the colored string
@@ -148,12 +131,12 @@ func (j *jlog) logTemplateFile(str ...string) string {
 	return addSep(j.separator, str...)
 }
 
-// addStep add separator for str. 
-func addSep(sep string, str ...string) string{
+// addStep add separator for str.
+func addSep(sep string, str ...string) string {
 	row := ""
 	for i, v := range str {
 		if i != (len(str) - 1) {
-			v = sepStr(v, sep)	
+			v = sepStr(v, sep)
 		} else {
 			v = ": " + v
 		}
@@ -169,7 +152,7 @@ func addSep(sep string, str ...string) string{
 func sepStr(str string, sep string) string {
 	charSep := []rune(sep)
 	s := ""
-	if len(sep) > 1 { 
+	if len(sep) > 1 {
 		s = string(charSep[0]) + str + string(charSep[1])
 	} else {
 		s = string(charSep[0]) + str
@@ -189,7 +172,7 @@ func toFile(location string, logFormat string, message string) {
 	} else {
 		path = location + "/" + filename
 	}
-	
+
 	if !charEndOfLine(message, "\n") {
 		message += "\n"
 	}
