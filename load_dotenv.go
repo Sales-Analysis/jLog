@@ -19,8 +19,13 @@ var defaultParameters = map[string]string{
 	"SEPARATOR": "[]",
 }
 
-func loadDotEnv(envFile string) {
-	_ = dotenv.Load(envFile)
+func loadDotEnv(path string) {
+	if len(path) != 0 {
+		err := dotenv.Load(path)
+		if err != nil {
+			fmt.Println(err)
+		}
+	}
 	setDefaultParams()
 }
 
