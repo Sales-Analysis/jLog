@@ -39,9 +39,9 @@ func TestAddSepLengthTwo(t *testing.T) {
 }
 
 func TestInit(t *testing.T) {
-	location := "logger"
+	location := "./data/test/logger"
 
-	j := Init("")
+	j := Init("./.env")
 	// test struct
 	if location != j.location {
 		fmt.Println(location, j.location)
@@ -55,7 +55,6 @@ func TestInit(t *testing.T) {
 
 func TestLog(t *testing.T) {
 	j := Init("")
-
 	message := "This is simple row."
 	j.Dummy(message)
 }

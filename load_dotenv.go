@@ -32,7 +32,7 @@ func loadDotEnv(path string) {
 // Set default parameters.
 func setDefaultParams() {
 	for key, value := range defaultParameters {
-		_, found := os.LookupEnv("a")
+		_, found := os.LookupEnv(key)
 		if !found {
 			fmt.Printf("Parameter %s is not sets. The default parameter is used.\n", key)
 			os.Setenv(key, value)
