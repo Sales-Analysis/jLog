@@ -2,6 +2,7 @@ package jlog
 
 import (
 	"bytes"
+	"fmt"
 	"log"
 	"os"
 	"testing"
@@ -38,11 +39,12 @@ func TestAddSepLengthTwo(t *testing.T) {
 }
 
 func TestInit(t *testing.T) {
-	location := "./data/test/logger"
+	location := "logger"
 
-	j := Init("./.env")
+	j := Init("")
 	// test struct
 	if location != j.location {
+		fmt.Println(location, j.location)
 		t.Errorf("Location is not equal")
 	}
 
@@ -52,7 +54,7 @@ func TestInit(t *testing.T) {
 }
 
 func TestLog(t *testing.T) {
-	j := Init("./.env")
+	j := Init("")
 
 	message := "This is simple row."
 	j.Dummy(message)
