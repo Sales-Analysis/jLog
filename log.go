@@ -80,14 +80,15 @@ func (j *jlog) stdout(prefix string, message string, counter uintptr) {
 		message = message + "\n"
 	}
 	packageName, funName := getPackageInfo(counter)
-	time_string := timeNow(j.format)
-	t := j.getColor(time_string, timeColor)
+	timeString := timeNow(j.format)
+	t := j.getColor(timeString, timeColor)
 	pkg := j.getColor(packageName, packageColor)
 	fun := j.getColor(funName, funColor)
 	p := j.getPrefixColor(prefix)
 
 	log := j.logTemplate(t, pkg, fun, p, message)
-	row := []string{timeNow(j.format), packageName, funName, prefix, message}
+
+	row := []string{timeString, packageName, funName, prefix, message}
 	logStdout := j.logTemplateFile(row...)
 
 	io.WriteString(os.Stdout, log)
