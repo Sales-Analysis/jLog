@@ -81,6 +81,7 @@ func (j *jlog) stdout(prefix string, message string, counter uintptr) {
 	}
 	packageName, funName := getPackageInfo(counter)
 	timeString := timeNow(j.format)
+
 	t := j.getColor(timeString, timeColor)
 	pkg := j.getColor(packageName, packageColor)
 	fun := j.getColor(funName, funColor)
@@ -146,7 +147,7 @@ func addSep(sep string, str ...string) string {
 	return row
 }
 
-// sep Str returns a delimited string.
+// sepStr returns a delimited string.
 // If the length of the separator is equal to 1,
 // the separator is placed at the beginning.
 // The length of the separator can not be more than two
@@ -174,8 +175,5 @@ func toFile(location string, logFormat string, message string) {
 		path = location + "/" + filename
 	}
 
-	if !charEndOfLine(message, "\n") {
-		message += "\n"
-	}
 	filemanager.Write(path, message)
 }
