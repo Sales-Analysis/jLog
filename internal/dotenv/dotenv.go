@@ -7,13 +7,18 @@ import (
 	"strings"
 )
 
-func Load(filename string) error {
+// filename: path to the file.
+// exceptions: slice of variables that are not overwritten.
+func Load(filename string, exceptions []string) error {
 	envMap, err := readFile(filename)
 
 	if err != nil {
 		return err
 	}
 	for key, value := range envMap {
+		if contains(value, exceptions) {
+			continue
+		}
 		os.Setenv(key, value)
 	}
 	return nil

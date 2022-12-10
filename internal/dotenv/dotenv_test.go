@@ -5,8 +5,9 @@ import (
 	"testing"
 )
 
-func TestInit(t *testing.T) {
-	Load("./.env_test")
+func TestInitWithoutExceptions(t *testing.T) {
+	var exceptions []string
+	Load("./.env_test", exceptions)
 	if os.Getenv("FORMAT_FILENAME") != "20060102" {
 		t.Errorf("FORMAT_FILENAME is not equal")
 	}
