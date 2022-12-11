@@ -20,8 +20,9 @@ var defaultParameters = map[string]string{
 }
 
 func loadDotEnv(path string) {
+	var exc []string
 	if len(path) != 0 {
-		err := dotenv.Load(path)
+		err := dotenv.Load(path, exc)
 		if err != nil {
 			fmt.Println(err)
 		}

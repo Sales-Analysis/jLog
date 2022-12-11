@@ -16,7 +16,7 @@ func Load(filename string, exceptions []string) error {
 		return err
 	}
 	for key, value := range envMap {
-		if contains(value, exceptions) {
+		if contains(key, exceptions) {
 			continue
 		}
 		os.Setenv(key, value)

@@ -12,3 +12,7 @@ func TestSetDefaultParams(t *testing.T) {
 		t.Errorf("value of var LOCATION is not equal")
 	}
 }
+
+func TestLoadDotEnv(t *testing.T) {
+	loadDotEnv("./.env")
+}

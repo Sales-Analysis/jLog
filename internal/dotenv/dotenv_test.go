@@ -15,3 +15,11 @@ func TestInitWithoutExceptions(t *testing.T) {
 		t.Errorf("SEPARATOR is not equal")
 	}
 }
+
+func TestInitWithExceptions(t *testing.T) {
+	exceptions := []string{"SIMPLE_VARIABLE"}
+	Load("./.env_test", exceptions)
+	if _, ok := os.LookupEnv("SIMPLE_VARIABLE"); ok {
+		t.Errorf("SIMPLE_VARIABLE exist.")
+	}
+}
