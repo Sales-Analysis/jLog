@@ -17,6 +17,8 @@ var defaultParameters = map[string]string{
 	"FORMAT_TIME_LOG": "2006-01-02 15:04:05",
 	// Separator
 	"SEPARATOR": "[]",
+	// log to stdout
+	"GOTOSTD": "true",
 }
 
 func loadDotEnv(path string) {
