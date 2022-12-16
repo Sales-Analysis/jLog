@@ -36,6 +36,7 @@ type jlog struct {
 	format    string // date format. Default value "2006-01-02 15:04:05".
 	filename  string // format log file name. Сan be an empty string. Default value "20060102".
 	separator string // message log separator.
+	gotostd   string // log to stdout. TODO: Переделать чтение .env, на различие bool значенией
 }
 
 // Create new jLog.
@@ -47,6 +48,7 @@ func Init(envFile string) *jlog {
 		format:    os.Getenv("FORMAT_TIME_LOG"),
 		filename:  os.Getenv("FORMAT_FILENAME"),
 		separator: os.Getenv("SEPARATOR"),
+		gotostd:   os.Getenv("GOTOSTD"),
 	}
 }
 
