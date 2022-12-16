@@ -89,12 +89,13 @@ func (j *jlog) stdout(prefix string, message string, counter uintptr) {
 	fun := j.getColor(funName, funColor)
 	p := j.getPrefixColor(prefix)
 
-	log := j.logTemplate(t, pkg, fun, p, message)
+	if j.gotostd == "true" {
+		log := j.logTemplate(t, pkg, fun, p, message)
+		io.WriteString(os.Stdout, log)
+	}
 
 	row := []string{timeString, packageName, funName, prefix, message}
 	logStdout := j.logTemplateFile(row...)
-
-	io.WriteString(os.Stdout, log)
 	toFile(j.location, j.filename, logStdout)
 }
 
