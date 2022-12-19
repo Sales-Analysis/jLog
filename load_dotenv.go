@@ -19,6 +19,8 @@ var defaultParameters = map[string]string{
 	"SEPARATOR": "[]",
 	// log to stdout
 	"GOTOSTD": "true",
+	// log to file
+	"GOTOFILE": "true",
 }
 
 func loadDotEnv(path string) {
