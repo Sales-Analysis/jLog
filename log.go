@@ -5,6 +5,7 @@ import (
 	"io"
 	"os"
 	"runtime"
+	"strconv"
 
 	"github.com/Sales-Analysis/jLog/internal/filemanager"
 )
@@ -36,19 +37,20 @@ type jlog struct {
 	format    string // date format. Default value "2006-01-02 15:04:05".
 	filename  string // format log file name. Сan be an empty string. Default value "20060102".
 	separator string // message log separator.
-	gotostd   string // log to stdout. TODO: Переделать чтение .env, на различие bool значенией
+	gotostd   bool   // log to stdout.
 }
 
 // Create new jLog.
 // The location variable sets the folder with log files.
 func Init(envFile string) *jlog {
 	loadDotEnv(envFile)
+	gotostd, _ := strconv.ParseBool(os.Getenv("GOTOSTD"))
 	return &jlog{
 		location:  os.Getenv("LOCATION"),
 		format:    os.Getenv("FORMAT_TIME_LOG"),
 		filename:  os.Getenv("FORMAT_FILENAME"),
 		separator: os.Getenv("SEPARATOR"),
-		gotostd:   os.Getenv("GOTOSTD"),
+		gotostd:   gotostd,
 	}
 }
 
@@ -89,7 +91,7 @@ func (j *jlog) stdout(prefix string, message string, counter uintptr) {
 	fun := j.getColor(funName, funColor)
 	p := j.getPrefixColor(prefix)
 
-	if j.gotostd == "true" {
+	if j.gotostd {
 		log := j.logTemplate(t, pkg, fun, p, message)
 		io.WriteString(os.Stdout, log)
 	}
