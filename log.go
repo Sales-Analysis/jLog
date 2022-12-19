@@ -38,6 +38,7 @@ type jlog struct {
 	filename  string // format log file name. Сan be an empty string. Default value "20060102".
 	separator string // message log separator.
 	gotostd   bool   // log to stdout.
+	gotofile  bool   // log to file.
 }
 
 // Create new jLog.
@@ -45,12 +46,14 @@ type jlog struct {
 func Init(envFile string) *jlog {
 	loadDotEnv(envFile)
 	gotostd, _ := strconv.ParseBool(os.Getenv("GOTOSTD"))
+	gotofile, _ := strconv.ParseBool(os.Getenv("GOTOFILE"))
 	return &jlog{
 		location:  os.Getenv("LOCATION"),
 		format:    os.Getenv("FORMAT_TIME_LOG"),
 		filename:  os.Getenv("FORMAT_FILENAME"),
 		separator: os.Getenv("SEPARATOR"),
 		gotostd:   gotostd,
+		gotofile:  gotofile,
 	}
 }
 
@@ -95,10 +98,11 @@ func (j *jlog) stdout(prefix string, message string, counter uintptr) {
 		log := j.logTemplate(t, pkg, fun, p, message)
 		io.WriteString(os.Stdout, log)
 	}
-
-	row := []string{timeString, packageName, funName, prefix, message}
-	logStdout := j.logTemplateFile(row...)
-	toFile(j.location, j.filename, logStdout)
+	if j.gotofile {
+		row := []string{timeString, packageName, funName, prefix, message}
+		logStdout := j.logTemplateFile(row...)
+		toFile(j.location, j.filename, logStdout)
+	}
 }
 
 // prefixColor returns the colored status.
