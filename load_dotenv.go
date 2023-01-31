@@ -13,6 +13,8 @@ var defaultParameters = map[string]string{
 	"LOCATION": "logger",
 	// Format log file name
 	"FORMAT_FILENAME": "20060102",
+	// Size of file
+	"MAX_BYTES": "0",
 	// Format log
 	"FORMAT_TIME_LOG": "2006-01-02 15:04:05",
 	// Separator
