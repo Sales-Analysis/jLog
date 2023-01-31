@@ -6,6 +6,7 @@ import (
 	"os"
 	"runtime"
 	"strconv"
+	"strings"
 
 	"github.com/Sales-Analysis/jLog/internal/filemanager"
 )
@@ -37,6 +38,7 @@ type jlog struct {
 	format    string // date format. Default value "2006-01-02 15:04:05".
 	filename  string // format log file name. Сan be an empty string. Default value "20060102".
 	separator string // message log separator.
+	maxBytes  int    // max size of file.
 	gotostd   bool   // log to stdout.
 	gotofile  bool   // log to file.
 }
@@ -47,11 +49,13 @@ func Init(envFile string) *jlog {
 	loadDotEnv(envFile)
 	gotostd, _ := strconv.ParseBool(os.Getenv("GOTOSTD"))
 	gotofile, _ := strconv.ParseBool(os.Getenv("GOTOFILE"))
+	maxBytes, _ := strconv.Atoi(os.Getenv("MAX_BYTES"))
 	return &jlog{
 		location:  os.Getenv("LOCATION"),
 		format:    os.Getenv("FORMAT_TIME_LOG"),
 		filename:  os.Getenv("FORMAT_FILENAME"),
 		separator: os.Getenv("SEPARATOR"),
+		maxBytes:  maxBytes,
 		gotostd:   gotostd,
 		gotofile:  gotofile,
 	}
@@ -101,7 +105,7 @@ func (j *jlog) stdout(prefix string, message string, counter uintptr) {
 	if j.gotofile {
 		row := []string{timeString, packageName, funName, prefix, message}
 		logStdout := j.logTemplateFile(row...)
-		toFile(j.location, j.filename, logStdout)
+		toFile(j.location, j.filename, logStdout, j.maxBytes)
 	}
 }
 
@@ -172,7 +176,7 @@ func sepStr(str string, sep string) string {
 }
 
 // toFile write log to file
-func toFile(location string, logFormat string, message string) {
+func toFile(location string, logFormat string, message string, maxBytes int) {
 	filemanager.CreateDir(location, false)
 
 	filename := makeFilename(logFormat)
@@ -182,6 +186,14 @@ func toFile(location string, logFormat string, message string) {
 		path = location + filename
 	} else {
 		path = location + "/" + filename
+	}
+
+	if maxBytes != 0 {
+		size, _ := filemanager.GetSizeOfFile(path)
+		if size >= int64(maxBytes) {
+			p := strings.Split(path, ".log")
+			fmt.Println(path, fmt.Sprintf("%s.backup.log", p[0]))
+		}
 	}
 
 	filemanager.Write(path, message)
