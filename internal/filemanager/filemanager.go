@@ -56,11 +56,11 @@ func GetSizeOfFile(path string) (int64, error) {
 	return fi.Size(), nil
 }
 
-func GetToZip(filename string, arhiveName string, path string) {
+func GetToZip(filename string, path string) {
 	f, _ := os.Open(filename)
 	defer f.Close()
 
-	archive, _ := os.Create(fmt.Sprintf("%s%s.zip", path, arhiveName))
+	archive, _ := os.Create(fmt.Sprintf("%s.zip", path))
 	zipWriter := zip.NewWriter(archive)
 	w, _ := zipWriter.Create(filename)
 

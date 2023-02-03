@@ -52,8 +52,7 @@ func TestGetFileSize(t *testing.T) {
 func TestGetToZip(t *testing.T) {
 	GetToZip(
 		"./data/data_test.txt",
-		"jLog",
-		"./data/",
+		"./data/jLog",
 	)
 	if _, err := os.Stat("./data/jLog.zip"); err != nil {
 		t.Errorf("zip file is not exist")
