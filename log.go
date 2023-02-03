@@ -192,7 +192,6 @@ func toFile(location string, logFormat string, message string, maxBytes int) {
 		size, _ := filemanager.GetSizeOfFile(path)
 		if size >= int64(maxBytes) {
 			p := strings.Split(path, ".log")
-			fmt.Println(path, fmt.Sprintf("%s.backup.log", p[0]))
 		}
 	}
 
