@@ -1,6 +1,9 @@
 package filemanager
 
 import (
+	"archive/zip"
+	"fmt"
+	"io"
 	"os"
 )
 
@@ -51,4 +54,19 @@ func GetSizeOfFile(path string) (int64, error) {
 		return 0, err
 	}
 	return fi.Size(), nil
+}
+
+func GetToZip(filename string, arhiveName string, path string) {
+	f, _ := os.Open(filename)
+	defer f.Close()
+
+	archive, _ := os.Create(fmt.Sprintf("%s%s.zip", path, arhiveName))
+	zipWriter := zip.NewWriter(archive)
+	w, _ := zipWriter.Create(filename)
+
+	if _, err := io.Copy(w, f); err != nil {
+		panic(err)
+	}
+
+	zipWriter.Close()
 }

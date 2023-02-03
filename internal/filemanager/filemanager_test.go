@@ -1,6 +1,7 @@
 package filemanager
 
 import (
+	"os"
 	"testing"
 )
 
@@ -45,5 +46,16 @@ func TestGetFileSize(t *testing.T) {
 	}
 	if size != 192 {
 		t.Errorf("Size of file is not equal")
+	}
+}
+
+func TestGetToZip(t *testing.T) {
+	GetToZip(
+		"./data/data_test.txt",
+		"jLog",
+		"./data/",
+	)
+	if _, err := os.Stat("./data/jLog.zip"); err != nil {
+		t.Errorf("zip file is not exist")
 	}
 }
