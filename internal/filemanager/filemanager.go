@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"strings"
 )
 
 // Write writes data to a file named by filename.
@@ -57,12 +58,19 @@ func GetSizeOfFile(path string) (int64, error) {
 }
 
 func GetToZip(filename string, path string) {
+
+	zipName := filename
+	if r := strings.Contains(filename, "/"); r {
+		n := strings.Split(filename, "/")
+		zipName = n[len(n)-1]
+	}
+
 	f, _ := os.Open(filename)
 	defer f.Close()
 
 	archive, _ := os.Create(fmt.Sprintf("%s.zip", path))
 	zipWriter := zip.NewWriter(archive)
-	w, _ := zipWriter.Create(filename)
+	w, _ := zipWriter.Create(zipName)
 
 	if _, err := io.Copy(w, f); err != nil {
 		panic(err)
