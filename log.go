@@ -188,6 +188,12 @@ func toFile(location string, logFormat string, message string, maxBytes int) {
 		path = location + "/" + filename
 	}
 
+	backup(path, maxBytes)
+
+	filemanager.Write(path, message)
+}
+
+func backup(path string, maxBytes int) {
 	if maxBytes != 0 {
 		size, _ := filemanager.GetSizeOfFile(path)
 		if size >= int64(maxBytes) {
@@ -198,6 +204,4 @@ func toFile(location string, logFormat string, message string, maxBytes int) {
 			_ = os.Rename(path, p)
 		}
 	}
-
-	filemanager.Write(path, message)
 }
