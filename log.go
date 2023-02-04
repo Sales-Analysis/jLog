@@ -193,6 +193,7 @@ func toFile(location string, logFormat string, message string, maxBytes int) {
 	filemanager.Write(path, message)
 }
 
+// backup copy log files
 func backup(path string, maxBytes int) {
 	if maxBytes != 0 {
 		size, _ := filemanager.GetSizeOfFile(path)
