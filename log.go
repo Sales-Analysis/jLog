@@ -34,11 +34,12 @@ const (
 )
 
 type jlog struct {
-	location  string // Folder with log files. Default value "logger".
+	location  string // folder with log files. Default value "logger".
 	format    string // date format. Default value "2006-01-02 15:04:05".
 	filename  string // format log file name. Сan be an empty string. Default value "20060102".
 	separator string // message log separator.
 	maxBytes  int    // max size of file.
+	fileCount int    // number of backup files.
 	gotostd   bool   // log to stdout.
 	gotofile  bool   // log to file.
 }
@@ -50,12 +51,14 @@ func Init(envFile string) *jlog {
 	gotostd, _ := strconv.ParseBool(os.Getenv("GOTOSTD"))
 	gotofile, _ := strconv.ParseBool(os.Getenv("GOTOFILE"))
 	maxBytes, _ := strconv.Atoi(os.Getenv("MAX_BYTES"))
+	fileCount, _ := strconv.Atoi(os.Getenv("FILE_COUNT"))
 	return &jlog{
 		location:  os.Getenv("LOCATION"),
 		format:    os.Getenv("FORMAT_TIME_LOG"),
 		filename:  os.Getenv("FORMAT_FILENAME"),
 		separator: os.Getenv("SEPARATOR"),
 		maxBytes:  maxBytes,
+		fileCount: fileCount,
 		gotostd:   gotostd,
 		gotofile:  gotofile,
 	}
