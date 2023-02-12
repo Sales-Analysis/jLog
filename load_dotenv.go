@@ -15,6 +15,8 @@ var defaultParameters = map[string]string{
 	"FORMAT_FILENAME": "20060102",
 	// Size of file
 	"MAX_BYTES": "0",
+	// file counter
+	"FILE_COUNTER": "0",
 	// Format log
 	"FORMAT_TIME_LOG": "2006-01-02 15:04:05",
 	// Separator
