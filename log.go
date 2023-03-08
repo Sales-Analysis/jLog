@@ -39,7 +39,8 @@ type jlog struct {
 	filename  string // format log file name. Сan be an empty string. Default value "20060102".
 	separator string // message log separator.
 	maxBytes  int    // max size of file.
-	fileCount int    // number of backup files.
+	fileCount string // number of backup files.
+	counted   string // number of counted files.
 	gotostd   bool   // log to stdout.
 	gotofile  bool   // log to file.
 }
@@ -51,14 +52,13 @@ func Init(envFile string) *jlog {
 	gotostd, _ := strconv.ParseBool(os.Getenv("GOTOSTD"))
 	gotofile, _ := strconv.ParseBool(os.Getenv("GOTOFILE"))
 	maxBytes, _ := strconv.Atoi(os.Getenv("MAX_BYTES"))
-	fileCount, _ := strconv.Atoi(os.Getenv("FILE_COUNT"))
 	return &jlog{
 		location:  os.Getenv("LOCATION"),
 		format:    os.Getenv("FORMAT_TIME_LOG"),
 		filename:  os.Getenv("FORMAT_FILENAME"),
 		separator: os.Getenv("SEPARATOR"),
 		maxBytes:  maxBytes,
-		fileCount: fileCount,
+		fileCount: os.Getenv("FILE_COUNTER"),
 		gotostd:   gotostd,
 		gotofile:  gotofile,
 	}
@@ -108,7 +108,7 @@ func (j *jlog) stdout(prefix string, message string, counter uintptr) {
 	if j.gotofile {
 		row := []string{timeString, packageName, funName, prefix, message}
 		logStdout := j.logTemplateFile(row...)
-		toFile(j.location, j.filename, logStdout, j.maxBytes)
+		toFile(j.location, j.filename, logStdout, j.fileCount, j.maxBytes)
 	}
 }
 
@@ -179,7 +179,7 @@ func sepStr(str string, sep string) string {
 }
 
 // toFile write log to file
-func toFile(location string, logFormat string, message string, maxBytes int) {
+func toFile(location string, logFormat string, message string, count string, maxBytes int) {
 	filemanager.CreateDir(location, false)
 
 	filename := makeFilename(logFormat)
@@ -191,21 +191,52 @@ func toFile(location string, logFormat string, message string, maxBytes int) {
 		path = location + "/" + filename
 	}
 
-	backup(path, maxBytes)
+	backup(path, count, maxBytes)
 
 	filemanager.Write(path, message)
 }
 
 // backup copy log files
-func backup(path string, maxBytes int) {
+func backup(path string, count string, maxBytes int) {
 	if maxBytes != 0 {
 		size, _ := filemanager.GetSizeOfFile(path)
 		if size >= int64(maxBytes) {
-			p := fmt.Sprintf("%s.backup.log", strings.Split(path, ".log")[0])
-			if _, err := os.Stat(p); err == nil {
-				filemanager.GetToZip(p, strings.Split(path, ".log")[0])
-			}
+			// TODO решить проблему с зипом при работе с counter
+			p := getFilename(strings.Split(path, ".log")[0], count)
+			// if _, err := os.Stat(p); err == nil {
+			//	filemanager.GetToZip(p, strings.Split(path, ".log")[0])
+			// }
 			_ = os.Rename(path, p)
 		}
 	}
+}
+
+func backupNew(path string, count string, maxBytes int) bool {
+	if maxBytes == 0 {
+		return false
+	}
+
+	size, _ := filemanager.GetSizeOfFile(path)
+	if size < int64(maxBytes) {
+		return false
+	}
+	p := getFilename(strings.Split(path, ".log")[0], count)
+	_ = os.Rename(path, p)
+	return true
+}
+
+func getFilename(path string, count string) string {
+	template := "%s.backup%s.log"
+	if count == "0" {
+		return fmt.Sprintf(template, path, "")
+	}
+
+	c, _ := strconv.Atoi(count)
+	for i := 1; i <= c; i++ {
+		p := fmt.Sprintf(template, path, i)
+		if _, err := os.Stat(p); err != nil {
+			return p
+		}
+	}
+	return fmt.Sprintf(template, path, "")
 }
