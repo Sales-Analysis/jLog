@@ -1,7 +1,11 @@
 package filemanager
 
 import (
+	"archive/zip"
+	"fmt"
+	"io"
 	"os"
+	"strings"
 )
 
 // Write writes data to a file named by filename.
@@ -42,4 +46,35 @@ func CreateDir(path string, many bool) error {
 		}
 	}
 	return nil
+}
+
+// Get size of file.
+func GetSizeOfFile(path string) (int64, error) {
+	fi, err := os.Stat(path)
+	if err != nil {
+		return 0, err
+	}
+	return fi.Size(), nil
+}
+
+func GetToZip(filename string, path string) {
+
+	zipName := filename
+	if r := strings.Contains(filename, "/"); r {
+		n := strings.Split(filename, "/")
+		zipName = n[len(n)-1]
+	}
+
+	f, _ := os.Open(filename)
+	defer f.Close()
+
+	archive, _ := os.Create(fmt.Sprintf("%s.zip", path))
+	zipWriter := zip.NewWriter(archive)
+	w, _ := zipWriter.Create(zipName)
+
+	if _, err := io.Copy(w, f); err != nil {
+		panic(err)
+	}
+
+	zipWriter.Close()
 }
