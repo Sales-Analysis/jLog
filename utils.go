@@ -2,6 +2,7 @@ package jlog
 
 import (
 	"fmt"
+	"os"
 	"runtime"
 	"strings"
 	"time"
@@ -19,16 +20,25 @@ func timeNow(format string) string {
 }
 
 // getPackageInfo returns name package and function.
-func getPackageInfo(counter uintptr) (string, string){
+func getPackageInfo(counter uintptr) (string, string) {
 	name := runtime.FuncForPC(counter).Name()
 	strs := strings.Split(name, "/")
 	info := strings.Split(strs[len(strs)-1], ".")
 	return info[0], info[len(info)-1]
 }
 
-// makeFilename create name file. 
+// makeFilename create name file.
 // Format <format>.log
 func makeFilename(format string) string {
 	t := timeNow(format)
 	return fmt.Sprintf("%s.log", t)
+}
+
+// Check file exists
+func fileExists(path string) bool {
+	info, err := os.Stat(path)
+	if os.IsNotExist(err) {
+		return false
+	}
+	return !info.IsDir()
 }

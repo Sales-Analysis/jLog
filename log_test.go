@@ -89,9 +89,20 @@ func TestBackupSizeLessMaxBytes(t *testing.T) {
 	}
 }
 
-func TestBackupMaxBytes(t *testing.T) {
+func TestBackupSizeLessMaxBytesZero(t *testing.T) {
 	path := "./data/test/test.log"
 	count := "0"
+	maxBytes := 0
+
+	status := backupNew(path, count, maxBytes)
+	if status {
+		t.Errorf("size not less maxBytes")
+	}
+}
+
+func TestBackupMaxBytes(t *testing.T) {
+	path := "./data/test/test.log"
+	count := "5"
 	maxBytes := 40
 	createFileTest(path)
 	_ = backupNew(path, count, maxBytes)

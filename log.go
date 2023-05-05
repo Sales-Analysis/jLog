@@ -220,9 +220,28 @@ func backupNew(path string, count string, maxBytes int) bool {
 	if size < int64(maxBytes) {
 		return false
 	}
-	p := getFilename(strings.Split(path, ".log")[0], count)
-	_ = os.Rename(path, p)
+
+	c, _ := strconv.Atoi(count)
+	name := ""
+	for i := 1; i <= c; i++ {
+		path := strings.Split(path, ".log")[0]
+		name = getFilenameNew(path, i)
+		if !fileExists(name) {
+			break
+		}
+	}
+	// p := getFilename(strings.Split(path, ".log")[0], count)
+	// fmt.Println(p)
+	// fmt.Println(name)
+	// _ = os.Rename(path, p)
 	return true
+}
+
+func getFilenameNew(path string, count int) string {
+	if count == 0 {
+		return fmt.Sprintf("%s.backup%s.log", path, "")
+	}
+	return fmt.Sprintf("%s.backup%d.log", path, count)
 }
 
 func getFilename(path string, count string) string {
